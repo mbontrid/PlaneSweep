@@ -8,7 +8,7 @@
 #
 #Plane Sweep for INFO-H-503 CUDA project
 #This file is used to generate buildable versions of Plane Sweep
-#GraphCut code comes from 
+#GraphCut code comes from
 #S. Rogge et al., "MPEG-I Depth Estimation Reference Software," 2019 International Conference on 3D #Immersion (IC3D), Brussels, Belgium, 2019, pp. 1-6, doi: 10.1109/IC3D48390.2019.8975995.
 #
 #Permission is hereby granted, free of charge, to the members of the Moving Picture
@@ -34,14 +34,15 @@ set(PROJECT_NAME "PlaneSweep")
 project(${PROJECT_NAME} LANGUAGES CUDA CXX)
 
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-    message(FATAL_ERROR "In-source build detected!")
+  message(FATAL_ERROR "In-source build detected!")
 endif()
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-find_package( OpenCV REQUIRED)
-
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(CUDA REQUIRED)         # This works for me
 include(CheckLanguage)
@@ -49,27 +50,27 @@ check_language(CUDA)
 
 
 if(${CMAKE_CUDA_COMPILER} STREQUAL "")
-    message(FATAL_ERROR "CUDA COMPILER not found!")
+  message(FATAL_ERROR "CUDA COMPILER not found!")
 endif()
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 11)
-    set(CMAKE_CXX_STANDARD_REQUIRED True)
-    set(CMAKE_CXX_EXTENSIONS OFF) 
+  set(CMAKE_CXX_STANDARD 11)
+  set(CMAKE_CXX_STANDARD_REQUIRED True)
+  set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
 if(NOT DEFINED CMAKE_CUDA_STANDARD)
-    set(CMAKE_CUDA_STANDARD 11)
-    set(CMAKE_CUDA_STANDARD_REQUIRED True)
+  set(CMAKE_CUDA_STANDARD 11)
+  set(CMAKE_CUDA_STANDARD_REQUIRED True)
 endif()
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-    include(FindCUDA/select_compute_arch)
-    CUDA_DETECT_INSTALLED_GPUS(INSTALLED_GPU_CCS_1)
-    string(STRIP "${INSTALLED_GPU_CCS_1}" INSTALLED_GPU_CCS_2)
-    string(REPLACE " " ";" INSTALLED_GPU_CCS_3 "${INSTALLED_GPU_CCS_2}")
-    string(REPLACE "." "" CUDA_ARCH_LIST "${INSTALLED_GPU_CCS_3}")
-    set(CMAKE_CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
+  include(FindCUDA/select_compute_arch)
+  CUDA_DETECT_INSTALLED_GPUS(INSTALLED_GPU_CCS_1)
+  string(STRIP "${INSTALLED_GPU_CCS_1}" INSTALLED_GPU_CCS_2)
+  string(REPLACE " " ";" INSTALLED_GPU_CCS_3 "${INSTALLED_GPU_CCS_2}")
+  string(REPLACE "." "" CUDA_ARCH_LIST "${INSTALLED_GPU_CCS_3}")
+  set(CMAKE_CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
 endif()
 
 
