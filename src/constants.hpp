@@ -1,3 +1,4 @@
+#pragma once
 #include "cam_params.hpp"
 #include <opencv2/core/mat.hpp>
 #include <string>
